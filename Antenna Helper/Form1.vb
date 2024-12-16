@@ -11,6 +11,16 @@
     'Private contextMenu As ContextMenuStrip
     Private txtLengthInput As TextBox
     Private transformer As CoordinateTransformer
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Ensure pbCanvas dimensions are valid
+        If pbCanvas IsNot Nothing Then
+            transformer = New CoordinateTransformer(pbCanvas.Width, pbCanvas.Height)
+            drawingManager = New DrawingManager(pbCanvas, transformer)
+        End If
+    End Sub
 
 
     ' Form Load Event
@@ -129,13 +139,21 @@
 
     ' Handles mouse movement for guideline updates and snapping
     Private Sub pbCanvas_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbCanvas.MouseMove
+        If transformer Is Nothing Then Return ' Ensure transformer is not null
+
+        ' Convert pixel coordinates to backend coordinates
         Dim backendPoint = transformer.PixelsToCoordinates(e.X, e.Y)
         Dim mouseX = backendPoint.X
         Dim mouseZ = backendPoint.Z
 
+        ' Adjust mouseZ for ground zero and snap to zero for precision
+        'Dim adjustedMouseZ As Double = mouseZ
+        ' Adjust Z to remove ground offset for clean display
+        Dim adjustedMouseZ As Double = backendPoint.Z - transformer.groundOffset
+        If Math.Abs(adjustedMouseZ) < 0.01 Then adjustedMouseZ = 0 ' Snap small values to zero
 
-        ' Update mouse position label text
-        lblMousePosition.Text = String.Format("({0:F2}, {1:F2})", mouseX, mouseZ)
+        lblMousePosition.Text = String.Format("({0:F2}, {1:F2})", mouseX, adjustedMouseZ)
+
 
         ' Ensure the label stays within the canvas boundaries
         Dim labelX As Integer = e.X + 10
@@ -162,11 +180,11 @@
         End If
 
         ' Update the guideline
-        Dim needsRedraw = drawingManager.HandleMouseMove(mouseX, mouseZ, chkLockDirection.Checked)
+        Dim needsRedraw = drawingManager.HandleMouseMove(mouseX, adjustedMouseZ, chkLockDirection.Checked)
 
         ' Display line length while drawing
         If Not firstClick AndAlso drawingManager.StartPoint IsNot Nothing Then
-            Dim length As Double = wireManager.CalculateLength(drawingManager.StartPoint, New Point3D(mouseX, 0, mouseZ))
+            Dim length As Double = wireManager.CalculateLength(drawingManager.StartPoint, New Point3D(mouseX, 0, adjustedMouseZ))
             lblMousePosition.Text &= String.Format(" | Length: {0:F2} ft", length)
         End If
 
@@ -185,6 +203,8 @@
             pbCanvas.Invalidate()
         End If
     End Sub
+
+
 
 
 

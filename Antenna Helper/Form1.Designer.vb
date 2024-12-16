@@ -48,8 +48,8 @@ Partial Class Form1
         '
         Me.pbCanvas.Location = New System.Drawing.Point(93, 12)
         Me.pbCanvas.Name = "pbCanvas"
-        Me.pbCanvas.Size = New System.Drawing.Size(1096, 467)
-        Me.pbCanvas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.pbCanvas.Size = New System.Drawing.Size(1096, 492)
+        Me.pbCanvas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.pbCanvas.TabIndex = 0
         Me.pbCanvas.TabStop = False
         '
@@ -75,7 +75,7 @@ Partial Class Form1
         'dgvWires
         '
         Me.dgvWires.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvWires.Location = New System.Drawing.Point(93, 485)
+        Me.dgvWires.Location = New System.Drawing.Point(93, 510)
         Me.dgvWires.Name = "dgvWires"
         Me.dgvWires.Size = New System.Drawing.Size(1096, 153)
         Me.dgvWires.TabIndex = 3
@@ -162,32 +162,32 @@ Partial Class Form1
         'OpenToolStripMenuItem
         '
         Me.OpenToolStripMenuItem.Name = "OpenToolStripMenuItem"
-        Me.OpenToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.OpenToolStripMenuItem.Size = New System.Drawing.Size(108, 22)
         Me.OpenToolStripMenuItem.Text = "Open"
         '
         'SaveToolStripMenuItem
         '
         Me.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem"
-        Me.SaveToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.SaveToolStripMenuItem.Size = New System.Drawing.Size(108, 22)
         Me.SaveToolStripMenuItem.Text = "Save"
         '
         'ExportToolStripMenuItem
         '
         Me.ExportToolStripMenuItem.Name = "ExportToolStripMenuItem"
-        Me.ExportToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ExportToolStripMenuItem.Size = New System.Drawing.Size(108, 22)
         Me.ExportToolStripMenuItem.Text = "Export"
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(108, 22)
         Me.ExitToolStripMenuItem.Text = "Exit"
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1204, 650)
+        Me.ClientSize = New System.Drawing.Size(1204, 675)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.chkLockDirection)

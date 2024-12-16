@@ -88,28 +88,30 @@
         Dim canvasHeight As Integer = canvas.Height
 
         Dim gridPen As New Pen(Color.LightGray)
+        Dim verticalOffset As Integer = 20 ' Shift grid upward by 20 pixels
 
         ' Draw vertical grid lines
         For x As Integer = 0 To canvasWidth Step gridSpacing
-            g.DrawLine(gridPen, x, 0, x, canvasHeight)
+            g.DrawLine(gridPen, x, 0 + verticalOffset, x, canvasHeight + verticalOffset)
         Next
 
         ' Draw horizontal grid lines
         For y As Integer = 0 To canvasHeight Step gridSpacing
-            g.DrawLine(gridPen, 0, y, canvasWidth, y)
+            g.DrawLine(gridPen, 0, y + verticalOffset, canvasWidth, y + verticalOffset)
         Next
 
         ' Draw center axis lines
         Dim axisPen As New Pen(Color.LightBlue, 2)
-        g.DrawLine(axisPen, canvasWidth \ 2, 0, canvasWidth \ 2, canvasHeight) ' Vertical axis
-        ' g.DrawLine(axisPen, 0, canvasHeight \ 2, canvasWidth, canvasHeight \ 2) ' Horizontal axis
+        g.DrawLine(axisPen, canvasWidth \ 2, verticalOffset, canvasWidth \ 2, canvasHeight + verticalOffset) ' Vertical axis
 
-        ' Draw ground zero line
-        Dim backendGroundZero = transformer.AdjustForGroundOffset(New Point3D(0, 0, 0), 2.0) ' Adjust ground zero by 2 feet
-        Dim groundPixelY = transformer.CoordinatesToPixels(backendGroundZero).Y
+        ' Manually adjust the ground zero line upwards
+        Dim groundPixelY As Integer = canvasHeight - (transformer.groundOffset * 10) + verticalOffset
         g.DrawLine(Pens.Blue, 0, groundPixelY, canvasWidth, groundPixelY)
-
     End Sub
+
+
+
+
 
     ' Draw all wires on the canvas
     Public Sub DrawWires(ByVal g As Graphics, ByVal wires As List(Of Wire), ByVal selectedIndex As Integer)
