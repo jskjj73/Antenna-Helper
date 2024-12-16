@@ -1,4 +1,11 @@
 ﻿Public Class DrawingManager
+
+    Private ReadOnly transformer As CoordinateTransformer
+
+    Public Sub New(ByVal canvas As PictureBox, ByVal transformer As CoordinateTransformer)
+        Me.canvas = canvas
+        Me.transformer = transformer
+    End Sub
     Private ReadOnly canvas As PictureBox
     Private mouseGuidelineEnd As Point3D
     Public startPoint As Point3D
@@ -95,7 +102,13 @@
         ' Draw center axis lines
         Dim axisPen As New Pen(Color.LightBlue, 2)
         g.DrawLine(axisPen, canvasWidth \ 2, 0, canvasWidth \ 2, canvasHeight) ' Vertical axis
-        g.DrawLine(axisPen, 0, canvasHeight \ 2, canvasWidth, canvasHeight \ 2) ' Horizontal axis
+        ' g.DrawLine(axisPen, 0, canvasHeight \ 2, canvasWidth, canvasHeight \ 2) ' Horizontal axis
+
+        ' Draw ground zero line
+        Dim backendGroundZero = transformer.AdjustForGroundOffset(New Point3D(0, 0, 0), 2.0) ' Adjust ground zero by 2 feet
+        Dim groundPixelY = transformer.CoordinatesToPixels(backendGroundZero).Y
+        g.DrawLine(Pens.Blue, 0, groundPixelY, canvasWidth, groundPixelY)
+
     End Sub
 
     ' Draw all wires on the canvas

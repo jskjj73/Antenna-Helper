@@ -10,11 +10,20 @@
     Private lblMousePosition As Label
     'Private contextMenu As ContextMenuStrip
     Private txtLengthInput As TextBox
+    Private transformer As CoordinateTransformer
+
 
     ' Form Load Event
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        ' Initialize DrawingManager
-        drawingManager = New DrawingManager(pbCanvas)
+
+        Dim transformer As New CoordinateTransformer(pbCanvas.Width, pbCanvas.Height)
+
+        drawingManager = New DrawingManager(pbCanvas, transformer)
+        ' Initialize transformer
+        transformer = New CoordinateTransformer(pbCanvas.Width, pbCanvas.Height)
+
+        ' Pass transformer to DrawingManager
+        drawingManager = New DrawingManager(pbCanvas, transformer)
 
         ' Initialize context menu
         Dim dgvContextMenu As New ContextMenuStrip() ' Renamed from contextMenu
@@ -120,8 +129,10 @@
 
     ' Handles mouse movement for guideline updates and snapping
     Private Sub pbCanvas_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbCanvas.MouseMove
-        Dim mouseX = (e.X / 10) - (pbCanvas.Width / 20)
-        Dim mouseZ = (pbCanvas.Height - e.Y) / 10
+        Dim backendPoint = transformer.PixelsToCoordinates(e.X, e.Y)
+        Dim mouseX = backendPoint.X
+        Dim mouseZ = backendPoint.Z
+
 
         ' Update mouse position label text
         lblMousePosition.Text = String.Format("({0:F2}, {1:F2})", mouseX, mouseZ)
@@ -191,6 +202,8 @@
         drawingManager.DrawGrid(g)
         drawingManager.DrawWires(g, wireManager.Wires, selectedWireIndex)
         drawingManager.DrawGuidelines(g)
+
+
 
         ' Draw snapping effect if a snapped point exists
         drawingManager.DrawSnapEffect(g)
