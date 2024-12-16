@@ -1,0 +1,10 @@
+C:\Users\John\documents\visual studio 2010\Projects\Antenna Helper\Antenna Helper\obj\x86\Debug\Antenna_Helper.Form1.resources
+C:\Users\John\documents\visual studio 2010\Projects\Antenna Helper\Antenna Helper\obj\x86\Debug\Antenna_Helper.Form2.resources
+C:\Users\John\documents\visual studio 2010\Projects\Antenna Helper\Antenna Helper\obj\x86\Debug\Antenna_Helper.Resources.resources
+C:\Users\John\documents\visual studio 2010\Projects\Antenna Helper\Antenna Helper\obj\x86\Debug\Antenna Helper.vbproj.GenerateResource.Cache
+C:\Users\John\documents\visual studio 2010\Projects\Antenna Helper\Antenna Helper\bin\Debug\Antenna Helper.exe
+C:\Users\John\documents\visual studio 2010\Projects\Antenna Helper\Antenna Helper\bin\Debug\Antenna Helper.pdb
+C:\Users\John\documents\visual studio 2010\Projects\Antenna Helper\Antenna Helper\bin\Debug\Antenna Helper.xml
+C:\Users\John\documents\visual studio 2010\Projects\Antenna Helper\Antenna Helper\obj\x86\Debug\Antenna Helper.exe
+C:\Users\John\documents\visual studio 2010\Projects\Antenna Helper\Antenna Helper\obj\x86\Debug\Antenna Helper.xml
+C:\Users\John\documents\visual studio 2010\Projects\Antenna Helper\Antenna Helper\obj\x86\Debug\Antenna Helper.pdb
