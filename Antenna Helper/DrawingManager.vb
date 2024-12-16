@@ -150,16 +150,15 @@
     Public Sub DrawGuidelines(ByVal g As Graphics)
         If startPoint Is Nothing OrElse mouseGuidelineEnd Is Nothing Then Return
 
-        ' Convert points to canvas coordinates with ZoomFactor applied
-        Dim startCanvasX = CInt((startPoint.X + (canvas.Width / 20)) * 10 * transformer.ZoomFactor)
-        Dim startCanvasY = CInt(canvas.Height - (startPoint.Z * 10 * transformer.ZoomFactor))
-        Dim endCanvasX = CInt((mouseGuidelineEnd.X + (canvas.Width / 20)) * 10 * transformer.ZoomFactor)
-        Dim endCanvasY = CInt(canvas.Height - (mouseGuidelineEnd.Z * 10 * transformer.ZoomFactor))
+        ' Convert backend points to canvas coordinates
+        Dim startPixel = transformer.CoordinatesToPixels(startPoint)
+        Dim endPixel = transformer.CoordinatesToPixels(mouseGuidelineEnd)
 
         ' Draw the guideline
         Dim guidelinePen As New Pen(Color.DarkRed, 1)
-        g.DrawLine(guidelinePen, startCanvasX, startCanvasY, endCanvasX, endCanvasY)
+        g.DrawLine(guidelinePen, startPixel.X, startPixel.Y, endPixel.X, endPixel.Y)
     End Sub
+
 
 
     ' Draw snapping glow around the nearest endpoint
@@ -239,6 +238,9 @@
     End Sub
 
 
+    Public Sub UpdateMouseGuidelineEnd(ByVal point As Point3D)
+        mouseGuidelineEnd = point
+    End Sub
 
 
 End Class
