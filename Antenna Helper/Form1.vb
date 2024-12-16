@@ -27,6 +27,7 @@
 
     ' Form Load Event
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+        Me.KeyPreview = True
 
         Dim transformer As New CoordinateTransformer(pbCanvas.Width, pbCanvas.Height)
 
@@ -144,18 +145,17 @@
         If transformer Is Nothing Then Return ' Ensure transformer is not null
 
         ' Convert pixel coordinates to backend coordinates
-        Dim backendPoint = transformer.PixelsToCoordinates(e.X, e.Y)
+        Dim backendPoint = transformer.PixelsToCoordinates(e.Location)
+
         Dim mouseX = backendPoint.X
         Dim mouseZ = backendPoint.Z
 
         ' Adjust mouseZ for ground zero and snap to zero for precision
-        'Dim adjustedMouseZ As Double = mouseZ
-        ' Adjust Z to remove ground offset for clean display
         Dim adjustedMouseZ As Double = backendPoint.Z - transformer.groundOffset
         If Math.Abs(adjustedMouseZ) < 0.01 Then adjustedMouseZ = 0 ' Snap small values to zero
 
-        lblMousePosition.Text = String.Format("({0:F2}, {1:F2})", mouseX, adjustedMouseZ)
-
+        ' Update mouse position label
+        lblMousePosition.Text = String.Format("({0:F2}, {1:F2}) (Zoom: {2:F1})", mouseX, adjustedMouseZ, transformer.ZoomFactor)
 
         ' Ensure the label stays within the canvas boundaries
         Dim labelX As Integer = e.X + 10
@@ -209,15 +209,9 @@
 
 
 
-
-
-
-
-
-
-
     ' Handles the canvas redraw
     Private Sub pbCanvas_Paint(ByVal sender As Object, ByVal e As PaintEventArgs) Handles pbCanvas.Paint
+        Debug.WriteLine("Paint event ZoomFactor: " & transformer.ZoomFactor)
         Dim g As Graphics = e.Graphics
 
         ' Draw the grid, wires, and any active effects
@@ -359,4 +353,32 @@
             MessageBox.Show("No wire selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
     End Sub
+
+    Private Sub ExportToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExportToolStripMenuItem.Click
+        wireManager.ExportWiresToMMANA()
+
+    End Sub
+
+    Private Sub Form1_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
+        If e.Control AndAlso e.KeyCode = Keys.Oemplus Then
+            transformer.ZoomFactor += 0.1
+            Debug.WriteLine("ZoomFactor increased to: " & transformer.ZoomFactor)
+            pbCanvas.Invalidate()
+        ElseIf e.Control AndAlso e.KeyCode = Keys.OemMinus Then
+            transformer.ZoomFactor = Math.Max(0.1, transformer.ZoomFactor - 0.1)
+            Debug.WriteLine("ZoomFactor decreased to: " & transformer.ZoomFactor)
+            pbCanvas.Invalidate()
+        End If
+    End Sub
+
+
+    Private Sub pbCanvas_MouseWheel(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbCanvas.MouseWheel
+        If e.Delta > 0 Then
+            transformer.ZoomFactor += 0.1
+        Else
+            transformer.ZoomFactor = Math.Max(0.1, transformer.ZoomFactor - 0.1)
+        End If
+        pbCanvas.Invalidate() ' Redraw canvas
+    End Sub
+
 End Class

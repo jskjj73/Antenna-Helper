@@ -12,6 +12,8 @@
     Private lockDirection As Boolean
     Private directionLockedAxis As String
     Private snapPoint As Point3D ' Stores the snapped endpoint
+    Public Property ZoomFactor As Double = 1.0
+
     ' Expose guideline end as a read-only property
     Public ReadOnly Property GuidelineEnd As Point3D
         Get
@@ -83,10 +85,11 @@
 
     ' Draw the grid on the canvas
     Public Sub DrawGrid(ByVal g As Graphics)
-        Dim gridSpacing As Integer = 10 ' 10 pixels = 1 foot
+        Debug.WriteLine("DrawGrid ZoomFactor (transformer): " & transformer.ZoomFactor)
+        Dim gridSpacing As Integer = CInt(10 * transformer.ZoomFactor) ' Apply zoom factor to grid spacing
         Dim canvasWidth As Integer = canvas.Width
         Dim canvasHeight As Integer = canvas.Height
-
+        ' Debug.WriteLine("Drawing grid with ZoomFactor: " & transformer.ZoomFactor)
         Dim gridPen As New Pen(Color.LightGray)
 
         ' Draw vertical grid lines
@@ -105,12 +108,7 @@
 
         ' Draw the ground zero line
         Dim backendGroundZero = New Point3D(0, 0, 0) ' Ground zero in backend coordinates
-        Dim groundPixelY = transformer.CoordinatesToPixels(backendGroundZero).Y - 20 ' Convert to canvas Y
-
-        ' Debug: Ensure groundPixelY is within expected bounds
-        '  Debug.WriteLine(String.Format("groundPixelY: {0}", groundPixelY))
-        'Debug.WriteLine(String.Format("Z: {0}, groundOffset: {1}, pixelY: {2}", Point.Z, groundOffset, pixelY))
-
+        Dim groundPixelY = transformer.CoordinatesToPixels(backendGroundZero).Y - 20 ' Convert to canvas Y and apply transformation
 
         ' Check if the line is within the visible canvas bounds
         If groundPixelY >= 0 AndAlso groundPixelY <= canvasHeight Then
@@ -119,6 +117,7 @@
             Debug.WriteLine("Ground zero line is out of bounds!")
         End If
     End Sub
+
 
 
 
