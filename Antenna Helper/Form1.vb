@@ -17,7 +17,9 @@
 
         ' Ensure pbCanvas dimensions are valid
         If pbCanvas IsNot Nothing Then
-            transformer = New CoordinateTransformer(pbCanvas.Width, pbCanvas.Height)
+            '  transformer = New CoordinateTransformer(pbCanvas.Width, pbCanvas.Height)
+            transformer = New CoordinateTransformer(pbCanvas.Width, pbCanvas.Height, 2.0)
+
             drawingManager = New DrawingManager(pbCanvas, transformer)
         End If
     End Sub
@@ -255,12 +257,20 @@
 
         For Each wire As Wire In wireManager.Wires
             Dim length = wireManager.CalculateLength(wire.StartPoint, wire.EndPoint)
-            dgvWires.Rows.Add(wire.StartPoint.X.ToString("F3"), wire.StartPoint.Y.ToString("F3"), wire.StartPoint.Z.ToString("F3"),
-                              wire.EndPoint.X.ToString("F3"), wire.EndPoint.Y.ToString("F3"), wire.EndPoint.Z.ToString("F3"),
-                              String.Format("{0:F3} ft", length),
-                              String.Format("{0:F3} ft", wire.Diameter), wire.Material)
+            dgvWires.Rows.Add(
+                wire.StartPoint.X.ToString("F3"),
+                wire.StartPoint.Y.ToString("F3"),
+                (wire.StartPoint.Z - transformer.groundOffset).ToString("F3"),
+                wire.EndPoint.X.ToString("F3"),
+                wire.EndPoint.Y.ToString("F3"),
+                (wire.EndPoint.Z - transformer.groundOffset).ToString("F3"),
+                String.Format("{0:F3} ft", length),
+                String.Format("{0:F3} ft", wire.Diameter),
+                wire.Material()
+            )
         Next
     End Sub
+
 
     ' Resets the drawing state
     Private Sub ResetDrawingState()

@@ -88,26 +88,39 @@
         Dim canvasHeight As Integer = canvas.Height
 
         Dim gridPen As New Pen(Color.LightGray)
-        Dim verticalOffset As Integer = 20 ' Shift grid upward by 20 pixels
 
         ' Draw vertical grid lines
         For x As Integer = 0 To canvasWidth Step gridSpacing
-            g.DrawLine(gridPen, x, 0 + verticalOffset, x, canvasHeight + verticalOffset)
+            g.DrawLine(gridPen, x, 0, x, canvasHeight)
         Next
 
         ' Draw horizontal grid lines
         For y As Integer = 0 To canvasHeight Step gridSpacing
-            g.DrawLine(gridPen, 0, y + verticalOffset, canvasWidth, y + verticalOffset)
+            g.DrawLine(gridPen, 0, y, canvasWidth, y)
         Next
 
         ' Draw center axis lines
         Dim axisPen As New Pen(Color.LightBlue, 2)
-        g.DrawLine(axisPen, canvasWidth \ 2, verticalOffset, canvasWidth \ 2, canvasHeight + verticalOffset) ' Vertical axis
+        g.DrawLine(axisPen, canvasWidth \ 2, 0, canvasWidth \ 2, canvasHeight) ' Vertical axis
 
-        ' Manually adjust the ground zero line upwards
-        Dim groundPixelY As Integer = canvasHeight - (transformer.groundOffset * 10) + verticalOffset
-        g.DrawLine(Pens.Blue, 0, groundPixelY, canvasWidth, groundPixelY)
+        ' Draw the ground zero line
+        Dim backendGroundZero = New Point3D(0, 0, 0) ' Ground zero in backend coordinates
+        Dim groundPixelY = transformer.CoordinatesToPixels(backendGroundZero).Y - 20 ' Convert to canvas Y
+
+        ' Debug: Ensure groundPixelY is within expected bounds
+        '  Debug.WriteLine(String.Format("groundPixelY: {0}", groundPixelY))
+        'Debug.WriteLine(String.Format("Z: {0}, groundOffset: {1}, pixelY: {2}", Point.Z, groundOffset, pixelY))
+
+
+        ' Check if the line is within the visible canvas bounds
+        If groundPixelY >= 0 AndAlso groundPixelY <= canvasHeight Then
+            g.DrawLine(Pens.Blue, 0, groundPixelY, canvasWidth, groundPixelY) ' Draw blue line
+        Else
+            Debug.WriteLine("Ground zero line is out of bounds!")
+        End If
     End Sub
+
+
 
 
 
