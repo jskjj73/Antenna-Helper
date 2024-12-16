@@ -1,7 +1,7 @@
 ﻿Public Class Form1
     ' Instances of other classes
     Private wireManager As New WireManager()
-    Private drawingManager As DrawingManager
+    'Private drawingManager As DrawingManager
 
     ' Variables for drawing logic
     Private firstClick As Boolean = True ' Tracks whether the first click was made
@@ -11,6 +11,9 @@
     'Private contextMenu As ContextMenuStrip
     Private txtLengthInput As TextBox
     Private transformer As CoordinateTransformer
+    Private drawingManager As DrawingManager
+
+
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
@@ -29,14 +32,14 @@
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Me.KeyPreview = True
 
-        Dim transformer As New CoordinateTransformer(pbCanvas.Width, pbCanvas.Height)
+        'Dim transformer As New CoordinateTransformer(pbCanvas.Width, pbCanvas.Height)
 
-        drawingManager = New DrawingManager(pbCanvas, transformer)
-        ' Initialize transformer
-        transformer = New CoordinateTransformer(pbCanvas.Width, pbCanvas.Height)
+        'drawingManager = New DrawingManager(pbCanvas, transformer)
+        '' Initialize transformer
+        'transformer = New CoordinateTransformer(pbCanvas.Width, pbCanvas.Height)
 
-        ' Pass transformer to DrawingManager
-        drawingManager = New DrawingManager(pbCanvas, transformer)
+        '' Pass transformer to DrawingManager
+        'drawingManager = New DrawingManager(pbCanvas, transformer)
 
         ' Initialize context menu
         Dim dgvContextMenu As New ContextMenuStrip() ' Renamed from contextMenu

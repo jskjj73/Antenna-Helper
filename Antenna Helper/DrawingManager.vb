@@ -85,7 +85,7 @@
 
     ' Draw the grid on the canvas
     Public Sub DrawGrid(ByVal g As Graphics)
-        Debug.WriteLine("DrawGrid ZoomFactor (transformer): " & transformer.ZoomFactor)
+        'Debug.WriteLine("DrawGrid ZoomFactor (transformer): " & transformer.ZoomFactor)
         Dim gridSpacing As Integer = CInt(10 * transformer.ZoomFactor) ' Apply zoom factor to grid spacing
         Dim canvasWidth As Integer = canvas.Width
         Dim canvasHeight As Integer = canvas.Height
@@ -150,16 +150,17 @@
     Public Sub DrawGuidelines(ByVal g As Graphics)
         If startPoint Is Nothing OrElse mouseGuidelineEnd Is Nothing Then Return
 
-        ' Convert points to canvas coordinates
-        Dim startCanvasX = CInt((startPoint.X + (canvas.Width / 20)) * 10)
-        Dim startCanvasY = CInt(canvas.Height - (startPoint.Z * 10))
-        Dim endCanvasX = CInt((mouseGuidelineEnd.X + (canvas.Width / 20)) * 10)
-        Dim endCanvasY = CInt(canvas.Height - (mouseGuidelineEnd.Z * 10))
+        ' Convert points to canvas coordinates with ZoomFactor applied
+        Dim startCanvasX = CInt((startPoint.X + (canvas.Width / 20)) * 10 * transformer.ZoomFactor)
+        Dim startCanvasY = CInt(canvas.Height - (startPoint.Z * 10 * transformer.ZoomFactor))
+        Dim endCanvasX = CInt((mouseGuidelineEnd.X + (canvas.Width / 20)) * 10 * transformer.ZoomFactor)
+        Dim endCanvasY = CInt(canvas.Height - (mouseGuidelineEnd.Z * 10 * transformer.ZoomFactor))
 
         ' Draw the guideline
         Dim guidelinePen As New Pen(Color.DarkRed, 1)
         g.DrawLine(guidelinePen, startCanvasX, startCanvasY, endCanvasX, endCanvasY)
     End Sub
+
 
     ' Draw snapping glow around the nearest endpoint
     Public Sub DrawSnapEffect(ByVal g As Graphics, ByVal snappedPoint As Point3D)

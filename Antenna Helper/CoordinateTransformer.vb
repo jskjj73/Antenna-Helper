@@ -3,6 +3,13 @@
     Private ReadOnly canvasHeight As Integer
     Public groundOffset As Double  ' Offset to account for the new ground zero (in backend units)
     Public Property ZoomFactor As Double = 1.0
+    Private transformer As CoordinateTransformer
+
+    ' Constructor accepting an existing transformer
+    Public Sub New(ByVal existingTransformer As CoordinateTransformer)
+        transformer = existingTransformer
+    End Sub
+
 
 
     Public Sub New(ByVal width As Integer, ByVal height As Integer, Optional ByVal groundOffset As Double = 0.0)
