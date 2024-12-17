@@ -152,12 +152,11 @@
 
         Dim mouseX = backendPoint.X
         Dim mouseZ = backendPoint.Z
-
-
+        Dim mousePixelX As Double = e.X
+        Dim mousePixelY As Double = e.Y
+        drawingManager.UpdateMouseGuidelineEnd(New Point3D(mousePixelX, 0, mousePixelY))
         ' Adjust mouseZ for ground zero and snap to zero for precision
-        Dim adjustedMouseZ As Double = backendPoint.Z - transformer.groundOffset
-        ' Update the endpoint of the guideline
-        drawingManager.UpdateMouseGuidelineEnd(New Point3D(mouseX, 0, mouseZ))
+        Dim adjustedMouseZ As Double = backendPoint.Z '- transformer.groundOffset
         If Math.Abs(adjustedMouseZ) < 0.01 Then adjustedMouseZ = 0 ' Snap small values to zero
 
         ' Update mouse position label

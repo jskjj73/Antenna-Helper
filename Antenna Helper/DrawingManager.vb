@@ -153,6 +153,12 @@
         ' Convert backend points to canvas coordinates
         Dim startPixel = transformer.CoordinatesToPixels(startPoint)
         Dim endPixel = transformer.CoordinatesToPixels(mouseGuidelineEnd)
+        ' Use raw pixel values for alignment
+        Dim startPixelX As Integer = transformer.CoordinatesToPixels(startPoint).X
+        Dim startPixelY As Integer = transformer.CoordinatesToPixels(startPoint).Y
+        Dim endPixelX As Integer = CInt(mouseGuidelineEnd.X) ' Use raw pixel X
+        Dim endPixelY As Integer = CInt(mouseGuidelineEnd.Z) ' Use raw pixel Y
+
 
         ' Draw the guideline
         Dim guidelinePen As New Pen(Color.DarkRed, 1)

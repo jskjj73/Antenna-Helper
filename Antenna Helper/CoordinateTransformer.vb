@@ -19,17 +19,18 @@
     End Sub
 
     ' Converts canvas pixels to backend coordinates (mouse movement)
-    Public Function CoordinatesToPixels(point As Point3D) As Point
-        Dim pixelX As Integer = CInt((point.X * 10 * ZoomFactor) + canvasWidth / 2)
+    Public Function CoordinatesToPixels(ByVal point As Point3D) As Point
+        Dim pixelX As Integer = CInt((point.X * 10 * ZoomFactor) + (canvasWidth / 2))
         Dim pixelY As Integer = CInt(canvasHeight - ((point.Z + groundOffset) * 10 * ZoomFactor))
         Return New Point(pixelX, pixelY)
     End Function
 
     Public Function PixelsToCoordinates(ByVal pixel As Point) As Point3D
-        Dim coordX As Double = (pixel.X - canvasWidth / 2) / (10 * ZoomFactor)
+        Dim coordX As Double = (pixel.X - (canvasWidth / 2)) / (10 * ZoomFactor)
         Dim coordZ As Double = ((canvasHeight - pixel.Y) / (10 * ZoomFactor)) - groundOffset
         Return New Point3D(coordX, 0, coordZ)
     End Function
+
 
 
     ' Adjusts backend coordinates for the ground offset
